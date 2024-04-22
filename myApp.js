@@ -8,14 +8,14 @@ mongoose.connect(process.env.MONGO_URI,
   { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Create a Person Model
-var personSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
   name: String,
   age: Number,
   favoriteFoods: [String]
 });
 
 // Create and Save a Person
-var Person = mongoose.model('Person', personSchema);
+let Person = mongoose.model('Person', personSchema);
 
 const createAndSavePerson = function(done) {
   var janeFonda = new Person({name: "Jane Fonda",
@@ -55,8 +55,11 @@ const findOneByFood = function(food, done) {
   });
 };
 
-const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+const findPersonById = function(personId, done) {
+  Person.findById(personId, function (err, data) {
+    if (err) return console.log(err);
+    done(null, data);
+  });
 };
 
 const findEditThenSave = (personId, done) => {
